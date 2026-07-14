@@ -1,11 +1,18 @@
 using Infrastructure.Persistences;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// 1.Configure Serilog from appsettings.json
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
 
+// 2. Tell the host to use Serilog instead of the default providers
+builder.Host.UseSerilog();
 builder.Services.AddControllers();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services
@@ -40,5 +47,17 @@ app.UseCors("Angular");
 app.UseAuthorization();
 
 app.MapControllers();
+try
+{
+    Log.Information("Starting web application");
+    app.Run();
 
-app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "Application start-up failed");
+}
+finally
+{
+    Log.CloseAndFlush();
+}

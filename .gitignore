@@ -6,6 +6,7 @@ dist/
 # .NET
 bin/
 obj/
+*.csproj.user
 
 # Visual Studio
 .vs/
@@ -21,6 +22,7 @@ obj/
 
 # User Secrets
 secrets.json
+appsettings.Development.json
 
 # OS
 .DS_Store
