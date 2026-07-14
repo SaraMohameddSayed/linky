@@ -17,6 +17,9 @@ obj/
 # Logs
 *.log
 
+# Serilog Logs
+**/Logs/
+
 # Environment
 .env
 
